@@ -1,0 +1,161 @@
+/* =============================================================================
+   千川监控助手 - 悬浮按钮样式 v2.6.3 (缩小版)
+   桌面端：40x40px | 移动端：35x35px
+   ============================================================================= */
+
+#qianchuan-floating-btn {
+  position: fixed;
+  right: 0px;
+  bottom: 148px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2147483647;
+  box-shadow: 
+    0 3px 15px rgba(102, 126, 234, 0.4),
+    0 6px 20px rgba(118, 75, 162, 0.3);
+  font-size: 18px;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+#qianchuan-floating-btn:hover {
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 
+    0 4px 20px rgba(102, 126, 234, 0.6),
+    0 8px 25px rgba(118, 75, 162, 0.4);
+}
+
+#qianchuan-floating-btn:active {
+  transform: scale(0.9);
+}
+
+#qianchuan-floating-btn.dragging {
+  cursor: grabbing;
+  opacity: 0.9;
+  transform: scale(0.9);
+}
+
+#qianchuan-floating-btn.active {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  box-shadow: 
+    0 3px 15px rgba(76, 175, 80, 0.4),
+    0 6px 20px rgba(76, 175, 80, 0.3);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 
+      0 3px 15px rgba(76, 175, 80, 0.4),
+      0 6px 20px rgba(76, 175, 80, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 3px 20px rgba(76, 175, 80, 0.6),
+      0 6px 30px rgba(76, 175, 80, 0.5);
+  }
+  100% {
+    box-shadow: 
+      0 3px 15px rgba(76, 175, 80, 0.4),
+      0 6px 20px rgba(76, 175, 80, 0.3);
+  }
+}
+
+#qianchuan-floating-btn .icon {
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.2));
+  transition: transform 0.3s;
+}
+
+#qianchuan-floating-btn:hover .icon {
+  transform: scale(1.1);
+}
+
+/* Tooltip 样式 - 随按钮缩小调整位置 */
+#qianchuan-floating-btn .tooltip {
+  position: absolute;
+  right: 50px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  line-height: 1.4;
+  max-width: 150px;
+  white-space: pre-line;
+  text-align: center;
+}
+
+#qianchuan-floating-btn:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  right: 52px;
+}
+
+#qianchuan-floating-btn .tooltip::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: rgba(0, 0, 0, 0.8);
+}
+
+/* 移动端适配 - 更小尺寸 */
+@media (max-width: 768px) {
+  #qianchuan-floating-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    right: 12px;
+    bottom: 80px;
+    border-width: 2px;
+  }
+  
+  #qianchuan-floating-btn .tooltip {
+    right: 42px;
+    font-size: 10px;
+    padding: 5px 8px;
+    max-width: 120px;
+  }
+  
+  #qianchuan-floating-btn:hover .tooltip {
+    right: 44px;
+  }
+  
+  #qianchuan-floating-btn .tooltip::after {
+    border-width: 4px;
+  }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 375px) {
+  #qianchuan-floating-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    right: 10px;
+    bottom: 70px;
+  }
+  
+  #qianchuan-floating-btn .tooltip {
+    right: 38px;
+    font-size: 9px;
+  }
+}

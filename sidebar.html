@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    :root {
+      --primary-color: #4CAF50;
+      --danger-color: #f44336;
+      --warning-color: #FF9800;
+      --info-color: #2196F3;
+      --purple-color: #667eea;
+      --dark-bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-primary: #212529;
+      --text-secondary: #6c757d;
+      --text-light: rgba(255, 255, 255, 0.85);
+      --border-color: #e9ecef;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+      --shadow-lg: 0 6px 16px rgba(0,0,0,0.15);
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 10px;
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body { 
+      width: 360px; 
+      min-height: 100vh;
+      padding: 0; 
+      margin: 0; 
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+      background: var(--dark-bg); 
+      color: var(--text-primary); 
+      font-size: 14px; 
+      line-height: 1.5; 
+      overflow-x: hidden;
+    }
+    
+    .header { 
+      background: linear-gradient(135deg, var(--purple-color) 0%, #764ba2 100%); 
+      padding: 20px; 
+      color: white; 
+      text-align: center; 
+      box-shadow: var(--shadow-sm); 
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header h1 { 
+      font-size: 18px; 
+      margin: 0; 
+      font-weight: 600; 
+      letter-spacing: 0.5px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 10px; 
+    }
+    
+    .header .version-badge { 
+      font-size: 10px; 
+      background: rgba(255,255,255,0.2); 
+      padding: 3px 8px; 
+      border-radius: 12px; 
+      font-weight: 500; 
+    }
+    
+    .close-btn {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    
+    .close-btn:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-50%) rotate(90deg);
+    }
+    
+    .main-content { 
+      padding: 16px; 
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
+    }
+    
+    .section { 
+      background: var(--card-bg); 
+      padding: 16px; 
+      border-radius: var(--radius-lg); 
+      margin-bottom: 12px; 
+      box-shadow: var(--shadow-sm); 
+      border: 1px solid var(--border-color); 
+      transition: var(--transition); 
+    }
+    
+    .section:hover { 
+      box-shadow: var(--shadow-md); 
+    }
+    
+    .section-title { 
+      font-weight: 600; 
+      font-size: 14px; 
+      color: var(--text-primary); 
+      margin-bottom: 12px; 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      padding-bottom: 8px; 
+      border-bottom: 1px solid var(--border-color); 
+    }
+    
+    .section-title::before { 
+      content: ''; 
+      width: 4px; 
+      height: 16px; 
+      background: var(--primary-color); 
+      border-radius: 2px; 
+    }
+    
+    .form-group { 
+      margin-bottom: 12px; 
+    }
+    
+    .form-group:last-child { 
+      margin-bottom: 0; 
+    }
+    
+    label { 
+      display: block; 
+      margin-bottom: 6px; 
+      color: var(--text-secondary); 
+      font-size: 12px; 
+      font-weight: 500; 
+    }
+    
+    input, select { 
+      width: 100%; 
+      padding: 10px 12px; 
+      border: 1px solid var(--border-color); 
+      border-radius: var(--radius-sm); 
+      box-sizing: border-box; 
+      font-size: 13px; 
+      font-family: inherit; 
+      background: #f8f9fa; 
+      transition: var(--transition); 
+    }
+    
+    input:focus, select:focus { 
+      outline: none; 
+      border-color: var(--primary-color); 
+      background: white; 
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1); 
+    }
+    
+    .help-text { 
+      font-size: 11px; 
+      color: var(--text-secondary); 
+      margin-top: 6px; 
+      line-height: 1.4; 
+    }
+    
+    .switch-group { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding: 6px 0; 
+    }
+    
+    .switch-group label:first-child { 
+      margin: 0; 
+      color: var(--text-primary); 
+      font-weight: 500;
+    }
+    
+    .switch { 
+      position: relative; 
+      display: inline-block; 
+      width: 44px; 
+      height: 22px; 
+      flex-shrink: 0; 
+    }
+    
+    .switch input { 
+      opacity: 0; 
+      width: 0; 
+      height: 0; 
+    }
+    
+    .slider { 
+      position: absolute; 
+      cursor: pointer; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      bottom: 0; 
+      background-color: #ced4da; 
+      transition: var(--transition); 
+      border-radius: 22px; 
+    }
+    
+    .slider:before { 
+      position: absolute; 
+      content: ""; 
+      height: 16px; 
+      width: 16px; 
+      left: 3px; 
+      bottom: 3px; 
+      background-color: white; 
+      transition: var(--transition); 
+      border-radius: 50%; 
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2); 
+    }
+    
+    input:checked + .slider { 
+      background-color: var(--primary-color); 
+    }
+    
+    input:checked + .slider:before { 
+      transform: translateX(22px); 
+    }
+    
+    input:focus + .slider { 
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); 
+    }
+    
+    .custom-interval { 
+      display: none; 
+      margin-top: 8px; 
+    }
+    
+    .custom-interval.show { 
+      display: block; 
+    }
+    
+    .custom-interval input { 
+      background: #e7f5ff; 
+      border-color: #a5d8ff; 
+    }
+    
+    .current-data { 
+      background: linear-gradient(135deg, var(--purple-color) 0%, #764ba2 100%); 
+      padding: 16px; 
+      border-radius: var(--radius-lg); 
+      margin-bottom: 16px; 
+      color: var(--text-light); 
+      cursor: pointer; 
+      box-shadow: var(--shadow-sm); 
+      transition: var(--transition); 
+      border: 1px solid rgba(255,255,255,0.1); 
+      position: relative; 
+    }
+    
+    .current-data:hover { 
+      transform: translateY(-2px); 
+      box-shadow: var(--shadow-lg); 
+    }
+    
+    .current-data.loading { 
+      opacity: 0.7; 
+      cursor: not-allowed; 
+    }
+    
+    .data-row { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 8px; 
+      padding: 4px 0; 
+    }
+    
+    .data-row:last-child { 
+      margin-bottom: 0; 
+    }
+    
+    .data-label { 
+      font-size: 12px; 
+      color: rgba(255, 255, 255, 0.75); 
+      font-weight: 500; 
+    }
+    
+    .data-value { 
+      font-weight: 600; 
+      color: white; 
+      font-size: 16px; 
+      font-variant-numeric: tabular-nums; 
+    }
+    
+    .refresh-hint { 
+      font-size: 11px; 
+      color: rgba(255, 255, 255, 0.6); 
+      text-align: center; 
+      margin-top: 10px; 
+      padding-top: 10px; 
+      border-top: 1px solid rgba(255, 255, 255, 0.15); 
+    }
+    
+    .button-group { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 8px; 
+      margin-bottom: 16px;
+    }
+    
+    button { 
+      padding: 10px 14px; 
+      border: none; 
+      border-radius: var(--radius-sm); 
+      font-size: 13px; 
+      cursor: pointer; 
+      transition: var(--transition); 
+      font-weight: 600; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 4px; 
+    }
+    
+    button:disabled { 
+      opacity: 0.6; 
+      cursor: not-allowed; 
+      transform: none !important; 
+    }
+    
+    .btn-primary { 
+      background: var(--primary-color); 
+      color: white; 
+    }
+    
+    .btn-primary:hover:not(:disabled) { 
+      background: #45a049; 
+      box-shadow: var(--shadow-md); 
+      transform: translateY(-1px); 
+    }
+    
+    .btn-test { 
+      background: var(--info-color); 
+      color: white; 
+    }
+    
+    .btn-test:hover:not(:disabled) { 
+      background: #0b7dda; 
+      box-shadow: var(--shadow-md); 
+      transform: translateY(-1px); 
+    }
+    
+    .btn-refresh { 
+      background: var(--warning-color); 
+      color: white; 
+      font-size: 12px; 
+    }
+    
+    .btn-refresh:hover:not(:disabled) { 
+      background: #F57C00; 
+      box-shadow: var(--shadow-md); 
+      transform: translateY(-1px); 
+    }
+    
+    .status { 
+      margin-bottom: 16px;
+      padding: 10px 12px; 
+      border-radius: var(--radius-sm); 
+      font-size: 12px; 
+      text-align: left; 
+      display: none; 
+      font-weight: 500; 
+      white-space: pre-line; 
+      line-height: 1.5; 
+    }
+    
+    .status.show { 
+      display: block; 
+    }
+    
+    .status.success { 
+      background: #d4edda; 
+      color: #155724; 
+      border-left: 4px solid #28a745; 
+    }
+    
+    .status.error { 
+      background: #f8d7da; 
+      color: #721c24; 
+      border-left: 4px solid #dc3545; 
+    }
+    
+    .status.info { 
+      background: #d1ecf1; 
+      color: #0c5460; 
+      border-left: 4px solid #17a2b8; 
+    }
+    
+    .version { 
+      text-align: center; 
+      font-size: 11px; 
+      color: var(--text-secondary); 
+      margin-top: 16px; 
+      padding-top: 12px; 
+      border-top: 1px solid var(--border-color); 
+    }
+    
+    .help-link {
+      text-align: center;
+      margin-top: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .help-link a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--info-color);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      background: rgba(33, 150, 243, 0.1);
+      transition: var(--transition);
+    }
+    
+    .help-link a:hover {
+      background: rgba(33, 150, 243, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    .collapse-panel {
+      margin-top: 8px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 8px;
+    }
+    
+    .collapse-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 6px 0;
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+    
+    .collapse-header:hover {
+      color: var(--primary-color);
+    }
+    
+    .collapse-content {
+      display: none;
+      padding: 8px 0;
+    }
+    
+    .collapse-content.show {
+      display: block;
+    }
+    
+    .collapse-arrow {
+      transition: transform 0.3s;
+      font-size: 12px;
+    }
+    
+    .collapse-arrow.rotate {
+      transform: rotate(90deg);
+    }
+    
+    .xpath-input {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      background: #f8f9fa;
+    }
+    
+    .xpath-input:focus {
+      background: #e7f5ff;
+      border-color: var(--info-color);
+    }
+    
+    .btn-reset {
+      background: #6c757d;
+      color: white;
+      font-size: 11px;
+      padding: 6px;
+      margin-top: 8px;
+      width: 100%;
+    }
+    
+    .btn-reset:hover:not(:disabled) {
+      background: #5a6268;
+    }
+    
+    .xpath-note {
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    
+    .live-status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .live-status-indicator.live {
+      background: rgba(40, 167, 69, 0.2);
+      color: #d4edda;
+      border: 1px solid rgba(40, 167, 69, 0.3);
+    }
+    .live-status-indicator.offline {
+      background: rgba(220, 53, 69, 0.2);
+      color: #f8d7da;
+      border: 1px solid rgba(220, 53, 69, 0.3);
+    }
+    .live-status-indicator.unknown {
+      background: rgba(255, 193, 7, 0.2);
+      color: #fff3cd;
+      border: 1px solid rgba(255, 193, 7, 0.3);
+    }
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+    }
+    
+    #lowOnlineDurationGroup {
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    #lowOnlineDurationGroup.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ced4da;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #adb5bd;
+    }
+    
+    /* 修复：面板切换按钮样式 */
+    .panel-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px;
+      margin-bottom: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-secondary);
+      transition: var(--transition);
+      font-weight: 500;
+      user-select: none;
+    }
+    
+    .panel-toggle:hover {
+      background: #f1f3f5;
+      color: var(--text-primary);
+      border-color: var(--primary-color);
+    }
+    
+    .panel-toggle-icon {
+      display: inline-block;
+      font-size: 12px;
+      transition: transform 0.3s;
+      /* 修复：确保没有CSS旋转变换，完全由JS控制 */
+      transform: none;
+    }
+    
+    /* 修复：面板内容区域 - 使用display切换确保可靠折叠 */
+    .panel-content {
+      overflow: hidden;
+      transition: opacity 0.3s ease;
+    }
+    
+    /* 折叠状态：除了max-height，还确保内容不可见 */
+    .panel-content.collapsed {
+      display: none; /* 修复：直接隐藏，确保可靠 */
+    }
+    
+    /* 展开状态 */
+    .panel-content:not(.collapsed) {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📊 千川监控助手 <span class="version-badge">v2.7</span></h1>
+    <button class="close-btn" id="closeSidebar" title="收起侧边栏">×</button>
+  </div>
+  
+  <div class="main-content">
+    
+    <div class="current-data" id="currentData" style="display: none;">
+      <div class="data-row">
+        <span class="data-label">当前总消耗:</span>
+        <span class="data-value" id="currentConsumption">--</span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">净ROI:</span>
+        <span class="data-value" id="currentROI">--</span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">在线人数:</span>
+        <span class="data-value" id="currentOnline">--</span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">曝光观看率:</span>
+        <span class="data-value" id="currentExposureRate">--</span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">互动率:</span>
+        <span class="data-value" id="currentInteractionRate">--</span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">直播状态:</span>
+        <span class="data-value" id="currentLiveStatus" style="font-size: 13px;">--</span>
+      </div>
+      <div class="refresh-hint">💡 点击刷新数据</div>
+    </div>
+    
+    <div class="status" id="status"></div>
+    
+    <div class="button-group">
+      <button class="btn-test" id="test">🧪 测试</button>
+      <button class="btn-refresh" id="resync">⏰ 同步</button>
+      <button class="btn-test" id="forcePush">⚡ 推送</button>
+      <button class="btn-primary" id="save">💾 保存</button>
+    </div>
+    
+    <!-- 修复：默认展开第一个面板，折叠图标为 ▼ -->
+    <div class="panel-toggle" id="notificationToggle">
+      <span>📢 通知与预警配置</span>
+      <span class="panel-toggle-icon">▶</span>
+    </div>
+    <div class="panel-content collapsed" id="notificationPanel">
+      
+      <div class="section">
+        <div class="section-title">⚙️ 基础配置</div>
+        <div class="form-group">
+          <label for="webhook">企业微信 Webhook 地址</label>
+          <input type="text" id="webhook" placeholder="https://qyapi.weixin.qq.com/...">
+          <div class="help-text">默认已配置，可直接使用或替换为您自己的地址</div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">📡 直播状态检测</div>
+        <div class="switch-group">
+          <label for="liveStatusEnabled">
+            <span style="font-weight: 500;">启用直播状态检测</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="liveStatusEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="help-text" style="margin-bottom: 12px;">
+          开启后，只有检测到"已开播"状态时才推送数据
+        </div>
+        
+        <div class="collapse-header" id="liveStatusXpathToggle">
+          <span>自定义直播状态XPath</span>
+          <span class="collapse-arrow" id="liveStatusXpathArrow">▶</span>
+        </div>
+        <div class="collapse-content" id="liveStatusXpathContent">
+          <div class="form-group" style="margin-top: 10px;">
+            <label for="xpathLiveStatus">直播状态 XPath</label>
+            <input type="text" id="xpathLiveStatus" class="xpath-input" placeholder="可选，留空使用默认">
+          </div>
+          
+          <div class="form-group">
+            <label for="liveStatusLiveKeyword">开播关键词</label>
+            <input type="text" id="liveStatusLiveKeyword" placeholder="已开播" value="已开播">
+          </div>
+          
+          <div class="form-group">
+            <label for="liveStatusStopKeyword">停播关键词</label>
+            <input type="text" id="liveStatusStopKeyword" placeholder="共" value="共">
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">💰 成交动态监控</div>
+        <div class="switch-group">
+          <label for="amountChangePushEnabled">
+            <span style="font-weight: 500;">成交金额变动推送</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="amountChangePushEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="help-text">
+          当直播间成交金额发生变动时，立即推送通知到企业微信
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">👥 在线人数预警</div>
+        <div class="switch-group">
+          <label for="onlineUsersThresholdEnabled">
+            <span style="font-weight: 500;">启用在线人数预警</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="onlineUsersThresholdEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="onlineUsersThreshold">在线人数阈值（人）</label>
+          <input type="number" id="onlineUsersThreshold" value="10" min="1" max="10000" step="1">
+          <div class="help-text">当实时在线人数超过此值时，立即推送预警通知</div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">📉 低在线人数预警</div>
+        <div class="switch-group">
+          <label for="lowOnlineUsersEnabled">
+            <span style="font-weight: 500;">启用低在线预警</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="lowOnlineUsersEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="switch-group">
+          <label for="lowOnlineUsersImmediate">
+            <span style="font-weight: 500;">立即推送模式</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="lowOnlineUsersImmediate">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="help-text" style="margin-bottom: 12px;">
+          开启后立即检测到低于阈值就推送，不等待持续时长
+        </div>
+        <div class="form-group">
+          <label for="lowOnlineUsersThreshold">低在线人数阈值（人）</label>
+          <input type="number" id="lowOnlineUsersThreshold" value="2" min="1" max="100" step="1">
+          <div class="help-text">当在线人数低于此值时推送预警</div>
+        </div>
+        <div class="form-group" id="lowOnlineDurationGroup">
+          <label for="lowOnlineUsersDuration">持续监测时长（分钟）</label>
+          <input type="number" id="lowOnlineUsersDuration" value="3" min="0" max="30" step="1">
+          <div class="help-text">在线人数持续低于阈值此时长后推送预警（0表示立即推送）</div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">⚠️ 消耗阈值预警</div>
+        <div class="switch-group">
+          <label for="thresholdEnabled">
+            <span style="font-weight: 500;">启用消耗阈值预警</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="thresholdEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="threshold">预警阈值（元/分钟）</label>
+          <input type="number" id="threshold" value="4" min="0.1" step="0.1">
+          <div class="help-text">当每分钟消耗超过此值时，立即推送预警</div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">📈 ROI 异常预警</div>
+        <div class="switch-group">
+          <label for="roiThresholdEnabled">
+            <span style="font-weight: 500;">启用ROI预警</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="roiThresholdEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="roiThreshold">ROI预警阈值</label>
+          <input type="number" id="roiThreshold" value="10.0" min="0.1" step="0.1">
+          <div class="help-text">当ROI低于此值时推送预警（默认10.0）</div>
+        </div>
+        <div class="form-group">
+          <label for="roiPushInterval">推送间隔（分钟）</label>
+          <input type="number" id="roiPushInterval" value="30" min="5" max="180" step="5">
+          <div class="help-text">在此时间间隔内最多推送一次ROI预警</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 修复：默认折叠第二个面板，图标为 ▶ -->
+    <div class="panel-toggle collapsed" id="systemToggle">
+      <span>🔧 系统与高级设置</span>
+      <span class="panel-toggle-icon">▶</span>
+    </div>
+    <div class="panel-content collapsed" id="systemPanel">
+      
+      <div class="section">
+        <div class="section-title">📊 定期数据报告</div>
+        <div class="switch-group">
+          <label for="periodicEnabled">
+            <span style="font-weight: 500;">启用定期推送</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="periodicEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="periodicInterval">推送间隔</label>
+          <select id="periodicInterval">
+            <option value="5" selected>5分钟（默认）</option>
+            <option value="10">10分钟</option>
+            <option value="15">15分钟</option>
+            <option value="20">20分钟</option>
+            <option value="custom">自定义...</option>
+          </select>
+          <div class="custom-interval" id="customIntervalGroup">
+            <input type="number" id="customIntervalValue" min="1" max="60" placeholder="输入分钟数">
+          </div>
+          <div class="help-text">定期推送完整数据报告到企业微信，时间自动对齐到整点</div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">🔄 页面自动刷新</div>
+        <div class="switch-group">
+          <label for="autoRefreshEnabled">
+            <span style="font-weight: 500;">启用自动刷新</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="autoRefreshEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="form-group" id="autoRefreshIntervalGroup" style="display: none;">
+          <label for="autoRefreshInterval">刷新间隔</label>
+          <select id="autoRefreshInterval">
+            <option value="5">5分钟（推荐）</option>
+            <option value="10" selected>10分钟（默认）</option>
+            <option value="15">15分钟</option>
+            <option value="20">20分钟</option>
+            <option value="30">30分钟</option>
+          </select>
+          <div class="help-text">仅在页面不可见时刷新，刷新前有30秒提示通知</div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">🔧 高级配置（XPath）</div>
+        <div class="collapse-header" id="xpathToggle">
+          <span>自定义数据抓取规则</span>
+          <span class="collapse-arrow" id="xpathArrow">▶</span>
+        </div>
+        <div class="collapse-content" id="xpathContent">
+          <div class="form-group">
+            <label for="xpathConsumption">投放消耗 XPath</label>
+            <input type="text" id="xpathConsumption" class="xpath-input" placeholder="可选，留空使用默认">
+          </div>
+          
+          <div class="form-group">
+            <label for="xpathGPM">千次观看支付 XPath</label>
+            <input type="text" id="xpathGPM" class="xpath-input" placeholder="可选，留空使用默认">
+          </div>
+          
+          <div class="form-group">
+            <label for="xpathOnlineUsers">实时在线人数 XPath</label>
+            <input type="text" id="xpathOnlineUsers" class="xpath-input" placeholder="可选，留空使用默认">
+          </div>
+          
+          <div class="form-group">
+            <label for="xpathTotalAmount">直播间成交金额 XPath</label>
+            <input type="text" id="xpathTotalAmount" class="xpath-input" placeholder="可选，留空使用默认">
+          </div>
+          
+          <div class="form-group">
+            <label for="xpathRefundAmount">退款金额 XPath</label>
+            <input type="text" id="xpathRefundAmount" class="xpath-input" placeholder="可选，留空使用默认">
+          </div>
+          
+          <div class="form-group">
+            <label for="xpathExposureViewRate">曝光观看率 XPath</label>
+            <input type="text" id="xpathExposureViewRate" class="xpath-input" placeholder="可选，留空使用默认">
+          </div>
+          
+          <div class="form-group">
+            <label for="xpathInteractionRate">互动率 XPath</label>
+            <input type="text" id="xpathInteractionRate" class="xpath-input" placeholder="可选，留空使用默认">
+          </div>
+          
+          <button class="btn-reset" id="resetXpath">恢复默认XPath</button>
+          <div class="xpath-note">
+            提示：如果页面结构变化导致数据抓取失败，可在此自定义XPath。修改后请刷新罗盘页面生效。
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div class="help-link">
+      <a href="https://yunyingmenghai.feishu.cn/wiki/KT7OwtsdQigbgvkW5XPcUfcxnUA" target="_blank" title="打开使用说明文档">
+        📖 使用说明
+      </a>
+    </div>
+    
+    <div class="version">
+      千川监控助手 v2.7.0 侧边栏版 · Made by 千尺浪
+    </div>
+    
+  </div>
+  
+  <script src="sidebar.js"></script>
+</body>
+</html>

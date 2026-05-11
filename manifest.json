@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "千川监控助手",
+  "version": "2.7.0",
+  "description": "实时监控抖音电商罗盘千川消耗，侧边栏模式，支持悬浮按钮展开/收起",
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "scripting",
+    "webNavigation",
+    "tabs",
+    "activeTab",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "https://compass.jinritemai.com/*",
+    "https://qyapi.weixin.qq.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidebar.html"
+  },
+  "action": {
+    "default_title": "点击打开千川监控侧边栏",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://compass.jinritemai.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "css": ["floating-btn.css"]
+    }
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
