@@ -36,3 +36,10 @@ temp/
 .env
 .env.local
 .env.*.local
+
+# Root-level image files (screenshots should go in assets/)
+/*.png
+/*.jpg
+/*.jpeg
+/*.gif
+/*.webp
