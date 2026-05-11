@@ -3,6 +3,8 @@
   "name": "千川监控助手",
   "version": "2.7.0",
   "description": "实时监控抖音电商罗盘千川消耗，侧边栏模式，支持悬浮按钮展开/收起",
+  "author": "千尺浪",
+  "homepage_url": "https://github.com/360PB/douyin-live-monitor",
   "permissions": [
     "storage",
     "alarms",
