@@ -186,15 +186,16 @@ git clone https://github.com/360PB/douyin-live-monitor.git
 
 ```
 douyin-live-monitor/
+├── assets/
+│   ├── icon16.png         # 扩展图标 (16x16)
+│   ├── icon48.png         # 扩展图标 (48x48)
+│   └── icon128.png        # 扩展图标 (128x128)
 ├── manifest.json          # Chrome 扩展清单 (Manifest V3)
 ├── background.js          # Service Worker - 核心后台逻辑
 ├── content.js             # 内容脚本 - 页面数据抓取
 ├── sidebar.html           # 侧边栏配置页面
 ├── sidebar.js             # 侧边栏交互逻辑
 ├── floating-btn.css       # 悬浮按钮样式
-├── icon16.png             # 扩展图标
-├── icon48.png
-├── icon128.png
 ├── LICENSE                # CC BY-NC-SA 4.0 许可证
 ├── CHANGELOG.md           # 更新日志
 ├── CONTRIBUTING.md        # 贡献指南
